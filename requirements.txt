@@ -4,4 +4,4 @@ jinja2
 python-multipart
 numpy
 pandas
-scikit-learn
+scikit-learn 
