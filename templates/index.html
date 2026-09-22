@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Car Price Predictor</title>
+    <title>Car Price Prediction</title>
 
     <link rel="stylesheet" href="/static/style.css">
 </head>
@@ -14,7 +14,7 @@
 
     <div class="container">
 
-        <h1>🚗 Car Price Predictor</h1>
+        <h1>🚗 Car Price Prediction</h1>
 
         <p class="subtitle">
             Enter the car details to predict its price
@@ -26,67 +26,94 @@
 
                 <div class="input-box">
                     <label>Symboling</label>
-                    <input type="number" id="symboling" step="any" required>
+                    <input type="number" step="any" id="symboling" required>
                 </div>
 
                 <div class="input-box">
                     <label>Wheelbase</label>
-                    <input type="number" id="wheelbase" step="any" required>
+                    <input type="number" step="any" id="wheelbase" required>
                 </div>
 
                 <div class="input-box">
                     <label>Car Length</label>
-                    <input type="number" id="carlength" step="any" required>
+                    <input type="number" step="any" id="carlength" required>
                 </div>
 
                 <div class="input-box">
                     <label>Car Width</label>
-                    <input type="number" id="carwidth" step="any" required>
+                    <input type="number" step="any" id="carwidth" required>
+                </div>
+
+                <div class="input-box">
+                    <label>Car Height</label>
+                    <input type="number" step="any" id="carheight" required>
+                </div>
+
+                <div class="input-box">
+                    <label>Curb Weight</label>
+                    <input type="number" step="any" id="curbweight" required>
                 </div>
 
                 <div class="input-box">
                     <label>Engine Size</label>
-                    <input type="number" id="enginesize" step="any" required>
+                    <input type="number" step="any" id="enginesize" required>
                 </div>
 
                 <div class="input-box">
                     <label>Bore Ratio</label>
-                    <input type="number" id="boreratio" step="any" required>
+                    <input type="number" step="any" id="boreratio" required>
                 </div>
 
                 <div class="input-box">
                     <label>Horsepower</label>
-                    <input type="number" id="horsepower" step="any" required>
+                    <input type="number" step="any" id="horsepower" required>
                 </div>
 
                 <div class="input-box">
                     <label>Peak RPM</label>
-                    <input type="number" id="peakrpm" step="any" required>
+                    <input type="number" step="any" id="peakrpm" required>
                 </div>
 
                 <div class="input-box">
                     <label>City MPG</label>
-                    <input type="number" id="citympg" step="any" required>
+                    <input type="number" step="any" id="citympg" required>
                 </div>
 
                 <div class="input-box">
                     <label>Highway MPG</label>
-                    <input type="number" id="highwaympg" step="any" required>
+                    <input type="number" step="any" id="highwaympg" required>
                 </div>
 
             </div>
 
-            <button type="submit">
+            <button type="submit" id="predictButton">
                 Predict Car Price
             </button>
 
         </form>
 
-        <div id="result"></div>
+
+        <div id="loading" class="loading">
+            Predicting...
+        </div>
+
+
+        <div id="result" class="result">
+
+            <h2>Predicted Car Price</h2>
+
+            <p id="predictionValue">₹ 0</p>
+
+        </div>
+
+
+        <div id="error" class="error"></div>
 
     </div>
+
 
     <script src="/static/script.js"></script>
 
 </body>
+
 </html>

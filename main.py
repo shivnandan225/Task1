@@ -1,18 +1,23 @@
 from fastapi import FastAPI
-from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from fastapi import Request
 from pydantic import BaseModel
 import pickle
 import numpy as np
 
-app = FastAPI(title="Car Price Prediction API")
+app = FastAPI(title="Car Price Prediction")
 
 # Load trained model
-with open("model.pkl", "rb") as f:
-    model = pickle.load(f)
+with open("car_price_model.pkl", "rb") as file:
+    model = pickle.load(file)
 
-# If you used a scaler during training, uncomment this
-# with open("scaler.pkl", "rb") as f:
-#     scaler = pickle.load(f)
+# Static files
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Templates
+templates = Jinja2Templates(directory="templates")
 
 
 class CarData(BaseModel):
@@ -20,6 +25,8 @@ class CarData(BaseModel):
     wheelbase: float
     carlength: float
     carwidth: float
+    carheight: float
+    curbweight: float
     enginesize: float
     boreratio: float
     horsepower: float
@@ -28,19 +35,24 @@ class CarData(BaseModel):
     highwaympg: float
 
 
-@app.get("/")
-def home():
-    return FileResponse("static/index.html")
+@app.get("/", response_class=HTMLResponse)
+async def home(request: Request):
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request}
+    )
 
 
 @app.post("/predict")
-def predict(data: CarData):
+async def predict(data: CarData):
 
-    features = np.array([[
+    input_data = np.array([[
         data.symboling,
         data.wheelbase,
         data.carlength,
         data.carwidth,
+        data.carheight,
+        data.curbweight,
         data.enginesize,
         data.boreratio,
         data.horsepower,
@@ -49,11 +61,8 @@ def predict(data: CarData):
         data.highwaympg
     ]])
 
-    # If scaler was used during training:
-    # features = scaler.transform(features)
-
-    prediction = model.predict(features)
+    prediction = model.predict(input_data)
 
     return {
-        "predicted_price": round(float(prediction[0]), 2)
+        "prediction": float(prediction[0])
     }
